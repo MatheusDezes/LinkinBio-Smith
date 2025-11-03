@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matheus Dezes</title>
+<link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./assets/icon.svg">
+
+
+
+  <!-- Estilos do projeto -->
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+    <!-- PRELOADER (logo Adinity) -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <img src="./assets/icon.svg" alt="Adinity" class="preloader__logo" />
+      <div class="preloader__ring" aria-hidden="true"></div>
+    </div>
+  </div>
+  <!-- BG decorativo -->
+  <div class="bg-logo" aria-hidden="true"></div>
+
+  <main class="page">
+    <!-- COLUNA ESQUERDA (mobile = tudo aqui) -->
+    <section class="wrap">
+      <!-- HERO MOBILE (hero atrás do avatar) -->
+      <header class="hero">
+        <figure class="hero-figure hero-figure--mobile">
+          <img src="./assets/personagemHero.png" alt="Hero Mobile" />
+        </figure>
+
+        <div class="avatar">
+          <img src="./assets/perfil.jpg" alt="Matheus Dezes" />
+        </div>
+
+        <h1 class="name">Matheus <span class="grad-dezes">Smith</span></h1>
+        <p class="subcopy">
+          Guiamos <b>clínicas odontológicas</b> no caminho do crescimento inteligente e
+          <b>resultados reais</b>
+        </p>
+      </header>
+
+      <!-- CARDS -->
+      <section class="cards">
+        <!-- CARD 1 -->
+        <a href="https://wa.me/5511910768994?text=Olá!%20Gostaria%20de%20entender%20como%20vocês%20ajudam%20clínicas%20odontológicas%20a%20dobrar%20a%20captação%20de%20pacientes.%20Pode%20me%20explicar%20melhor?
+" class="card card-wapp">
+          <div class="card__content">
+            <h3 class="card__title">
+              Descubra como dobrar<br />
+              pacientes da <b>sua clínica</b><br />
+              via <span class="text-wapp">WhatsApp</span>
+            </h3>
+            <span class="btn">Agendar Agora</span>
+          </div>
+        </a>
+
+        <!-- CARD 2 -->
+        <a href="#" class="card card-sinap">
+          <div class="card__content">
+            <h3 class="card__title">Como dobramos <br /><b>pacientes?</b></h3>
+            <span class="btn">Conhecer o Método</span>
+          </div>
+        </a>
+      </section>
+
+      <!-- LOGO -->
+      <div class="brand">
+        <img src="./assets/logo.png" alt="Adinity" />
+      </div>
+    </section>
+
+    <!-- HERO DESKTOP -->
+    <aside class="right-hero">
+      <figure class="hero-figure hero-figure--desktop">
+        <img src="./assets/personagemHero.png" alt="Hero Desktop" />
+      </figure>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    © 2025 ASSESSORIA ADINITY | TODOS OS DIREITOS RESERVADOS
+  </footer>
+
+  <script>
+      (function(){
+    const preloader = document.getElementById('preloader');
+
+    // tempo mínimo (deixa elegante) e máximo (fallback)
+    const MIN_SHOW = 400;   // ms
+    const MAX_SHOW = 2500;  // ms
+    const start = performance.now();
+
+    function hidePreloader() {
+      const elapsed = performance.now() - start;
+      const wait = Math.max(0, MIN_SHOW - elapsed);
+      setTimeout(() => {
+        preloader.classList.add('is-hidden');
+        // dispara sua animação de entrada existente
+        document.body.classList.add('page-enter');
+        // remove do DOM depois do fade
+        setTimeout(() => preloader.remove(), 600);
+      }, wait);
+    }
+
+    // esconde quando tudo carregou (imagens, css, etc.)
+    window.addEventListener('load', hidePreloader);
+    // fallback: se algo travar, some no máximo em MAX_SHOW
+    setTimeout(hidePreloader, MAX_SHOW);
+  })();
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      // Força reflow antes de animar a página (evita flicker)
+      document.body.classList.remove('page-enter');
+      void document.body.offsetWidth; // reflow
+      document.body.classList.add('page-enter');
+
+      // Reveal progressivo
+      const toReveal = document.querySelectorAll('.hero, .cards .card, .brand, .right-hero');
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0,               // qualquer pixel visível dispara
+          rootMargin: '0px 0px -10% 0px' // adianta um pouco o gatilho
+        }
+      );
+
+      // Adiciona .reveal no próximo frame (evita conflito com animação inicial)
+      requestAnimationFrame(() => {
+        toReveal.forEach((el) => {
+          el.classList.add('reveal');
+          io.observe(el);
+        });
+      });
+    });
+
+    // Garante animações mesmo se o SO estiver com "reduzir movimento"
+    document.documentElement.classList.add('force-anim');
+  </script>
+</body>
+</html>
